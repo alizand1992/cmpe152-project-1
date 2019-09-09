@@ -1,4 +1,4 @@
-package test.java.lexer;
+package lexer;
 
 public class LexerTest {
 }
