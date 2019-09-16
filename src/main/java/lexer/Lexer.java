@@ -13,8 +13,6 @@ public class Lexer {
     public Lexer(String str) {
         tokens = new LinkedList<>();
         line = str;
-        tokens.add(new Token("abcd", "ID"));
-        tokens.add(new Token(";"));
     }
 
     public Token getNextToken() {
@@ -37,5 +35,3 @@ public class Lexer {
         return  false;
     }
 }
-
-//this is me 

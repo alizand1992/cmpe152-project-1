@@ -88,10 +88,14 @@ public class LexerTest {
     }
 
     // getNextToken
-
     @Test
     public void getNextTokenReturnsFirstTokenCorrectly() {
         Lexer lex = new Lexer("int a = 5;");
+        assertEquals(new Token("int", "BASE_TYPE"), lex.getNextToken());
+        assertEquals(new Token("a", "ID"), lex.getNextToken());
+        assertEquals(new Token("=", "EQ"), lex.getNextToken());
+        assertEquals(new Token("5", "NUM"), lex.getNextToken());
+        assertEquals(new Token(";"), lex.getNextToken());
     }
 
     @Test
