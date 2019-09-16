@@ -29,10 +29,6 @@ public class Lexer {
         return this.tokens;
     }
 
-    public static boolean isValid(String pattern) {
-        return false;
-    }
-
     public static boolean isId(String pattern) {
         return false;
     }
