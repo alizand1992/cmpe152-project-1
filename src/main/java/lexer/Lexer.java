@@ -1,26 +1,51 @@
 package lexer;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Lexer {
     private LinkedList<Token> tokens;
-    private String line;
+    private ArrayList<String> lines;
 
     public Lexer() {
-        tokens = new LinkedList<Token>();
-    }
-
-    public Lexer(String str) {
         tokens = new LinkedList<>();
-        line = str;
+        lines = new ArrayList<>();
     }
 
+    public Lexer(String line) {
+        tokens = new LinkedList<>();
+        lines = new ArrayList<>();
+        lines.add(line);
+    }
+
+    public Lexer(ArrayList<String> lines) {
+        tokens = new LinkedList<>();
+        this.lines = lines;
+    }
+
+    /**
+     * This method returns the next token in the LinkedList. It should keep track of an internal index.
+     * It should return EOF for when called and the index is on the last token.
+     *
+     * @return single token at the next index
+     */
     public Token getNextToken() {
         return null;
     };
 
+    /**
+     * This method returns all of the tokens in form of an LinkedList.
+     *
+     * @return All tokens
+     */
     public LinkedList<Token> getTokens() {
         return this.tokens;
+    }
+
+    public void tokenize() {
+        if (lines == null) {
+            return;
+        }
     }
 
     /**
