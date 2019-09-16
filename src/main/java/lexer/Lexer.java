@@ -47,10 +47,9 @@ public class Lexer {
         }
 
         for (int i = 0; i < pattern.length(); i++) {
-            boolean illegalChar = false;
             char currentChar = pattern.charAt(i);
 
-            if (!(isLowerCase(currentChar) || isUpperCase(currentChar) || isDigit(currentChar) || currentChar == '_')) {
+            if (!(isAlphabet(currentChar) || isDigit(currentChar) || currentChar == '_')) {
                 return false;
             }
         }
@@ -68,6 +67,17 @@ public class Lexer {
 
 
     // Private helper methods
+
+    /**
+     * This method takes a character and returns true if it is an alphabet character
+     *
+     * @param c
+     * @return
+     */
+    private static boolean isAlphabet(char c) {
+        return isLowerCase(c) || isUpperCase(c);
+    }
+
     /**
      * This method takes a character and returns true if it is a lower case alphabet character
      *
@@ -79,7 +89,7 @@ public class Lexer {
     }
 
     /**
-     * This methid takes a character and returns true if it is an upper case alphabet character
+     * This method takes a character and returns true if it is an upper case alphabet character
      *
      * @param c
      * @return
