@@ -45,6 +45,7 @@ public class TokenType {
         types.put("-", new Token("-"));
         types.put("*", new Token("*"));
         types.put("/", new Token("/"));
+        types.put("\26", new Token("\26", "EOF"));
 
         return types;
     }
