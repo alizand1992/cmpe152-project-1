@@ -83,7 +83,13 @@ public class Lexer {
     }
 
     public static boolean isNum(String pattern) {
-        return false;
+        for (int i = 0; i < pattern.length(); i++) {
+            if (!isDigit(pattern.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static boolean isReal(String pattern) {
