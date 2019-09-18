@@ -69,7 +69,7 @@ public class Lexer {
     }
 
     public void tokenizeLine(String line) {
-        line = line.trim();
+        line = ourTrim(line);
         String temp = "";
 
         for (int i = 0; i < line.length(); i++) {
@@ -96,7 +96,7 @@ public class Lexer {
                             if (lastChar == noSpaceNeeded[j]) {
                                 flag = true;
                                 tokens.add(getToken(temp));
-                                line = line.substring(temp.length()).trim();
+                                line = ourTrim(line.substring(temp.length()));
                                 temp = "";
                                 i = -1;
                                 break;
@@ -104,7 +104,7 @@ public class Lexer {
                         }
                     } else {
                         tokens.add(getToken(temp));
-                        line = line.substring(temp.length()).trim();
+                        line = ourTrim(line.substring(temp.length()));
                         temp = "";
                         i = -1;
                         flag = true;
@@ -242,4 +242,27 @@ public class Lexer {
     private static boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
+    // removes leading and trailing spaces
+    private static String ourTrim(String s){
+        String temp = "";
+        boolean first = true;
+        for (int x = 0; x < s.length(); x++){
+            if (s.charAt(x) == ' ' && first){}
+            else {
+                first = false;
+                temp += s.charAt(x);
+            }
+        }
+        boolean last = true;
+        for (int x = 0; x < temp.length(); x++){
+            if (temp.charAt(temp.length()-1-x) == ' ' && last);
+            else {
+                last = false;
+                temp = temp.substring(0,temp.length()-x);
+                break;
+            }
+        };
+        return temp;
+    }
+    
 }
