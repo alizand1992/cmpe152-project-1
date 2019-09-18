@@ -81,16 +81,36 @@ public class Lexer {
                     temp = temp.substring(0, temp.length() - 1);
                     boolean flag = false;
 
-                    for (int j = 0; j < noSpaceNeeded.length; j++) {
-                        if (lastChar == noSpaceNeeded[j]) {
-                            flag = true;
-                            tokens.add(getToken(temp));
-                            line = line.substring(temp.length()).trim();
-                            temp = "";
-                            i = -1;
-                            break;
+                    boolean currentCharDoesNotNeedSpaces = false;
+                    if (temp.length() - 1 >= 0) {
+                        for (int j = 0; j < noSpaceNeeded.length; j++) {
+                            if (temp.charAt(temp.length() - 1) == noSpaceNeeded[j]) {
+                                currentCharDoesNotNeedSpaces = true;
+                                break;
+                            }
                         }
                     }
+
+                    if (!currentCharDoesNotNeedSpaces) {
+                        for (int j = 0; j < noSpaceNeeded.length; j++) {
+                            if (lastChar == noSpaceNeeded[j]) {
+                                flag = true;
+                                tokens.add(getToken(temp));
+                                line = line.substring(temp.length()).trim();
+                                temp = "";
+                                i = -1;
+                                break;
+                            }
+                        }
+                    } else {
+                        tokens.add(getToken(temp));
+                        line = line.substring(temp.length()).trim();
+                        temp = "";
+                        i = -1;
+                        flag = true;
+                    }
+
+                    System.out.println("Flag: " + flag + "\ntoken: " + tokens.getLast().toString() + "\nline: " + line);
 
                     if (!flag) {
                         tokens.add(null);

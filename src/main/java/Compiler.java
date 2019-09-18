@@ -41,7 +41,7 @@ public class Compiler {
             }
 
             if (!tok.getName().equals("EOF")) {
-                System.out.printf("%s\t%s\n", tok.getName(), tok.getPattern());
+                System.out.println(tok.toString());
             } else {
                 break;
             }
