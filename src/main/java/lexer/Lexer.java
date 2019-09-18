@@ -32,6 +32,21 @@ public class Lexer {
     }
 
     public static boolean isReal(String pattern) {
-        return  false;
+        if (pattern.charAt(0) == '.' || pattern.charAt(pattern.length() - 1) == '.') {
+            return false;
+        }
+
+        boolean hasDec = false;
+        for (int i = 0; i < pattern.length(); i++) {
+            if (!isDigit(pattern.charAt(i))) {
+                if (pattern.charAt(i) == '.' && !hasDec) {
+                    hasDec = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return hasDec;
     }
 }

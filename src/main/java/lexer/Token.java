@@ -57,4 +57,9 @@ public class Token {
 
         return this.name.equals(rhs.getName()) && this.pattern.equals(rhs.getPattern());
     }
+
+    @Override
+    public String toString() {
+        return getName() + " - " + getPattern();
+    }
 }

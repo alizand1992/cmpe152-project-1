@@ -34,6 +34,7 @@ public class TokenType {
         types.put("real", new Token("real", "REAL"));
         types.put("true", new Token("true", "TRUE"));
         types.put("while", new Token("while", "WHILE"));
+        types.put(";", new Token(";", ";"));
         types.put("=", new Token("="));
         types.put("<", new Token("<"));
         types.put(">", new Token(">"));
