@@ -2,7 +2,7 @@ package lexer;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class LexerTest {
     @Test
@@ -21,70 +21,80 @@ public class LexerTest {
 
     // isId function test
     @Test
+    public void isIdReturnsFalseIfStartingWithNumber() {
+        assertFalse(Lexer.isId("9asd"));
+    }
+
+    @Test
+    public void isIdReturnsFalseIfStartingWithUnderScore() {
+        assertFalse(Lexer.isId("_abcd"));
+    }
+
+    @Test
     public void isIdReturnsTrueIfOnlyLowerCasse() {
-        assertEquals(true, Lexer.isId("abcd"));
+        assertTrue(Lexer.isId("abcd"));
     }
 
     @Test
     public void isIdRetrunsTrueIfLowerCaseAndUnderscoor() {
-        assertEquals(true, Lexer.isId("ab_cd"));
+        assertTrue(Lexer.isId("ab_cd"));
+    }
+
+    @Test
+    public void isIdReturnsFalseIfOtherCharactesThanIdPatternAreinString() {
+        assertFalse(Lexer.isId("abcd;"));
     }
 
     @Test
     public void isIdReturnsTrueIfLowerCaseAndNumber() {
-        assertEquals(true, Lexer.isId("abcd9"));
+        assertTrue(Lexer.isId("abcd9"));
     }
 
     @Test
     public void isIdReturnsTrueIfLowerCaseNumberAndUnderscore() {
-        assertEquals(true, Lexer.isId("ab_cd9"));
+        assertTrue(Lexer.isId("ab_cd9"));
     }
 
     @Test
     public void isIdReturnsTrueIfAll() {
-        assertEquals(true, Lexer.isId("Abc_d9"));
-    }
-
-    @Test
-    public void isIdReturnsFalseIfStartingWithNumber() {
-        assertEquals(false, Lexer.isId("9asd"));
+        assertTrue(Lexer.isId("Abc_d9"));
     }
 
     // isReal function tests
     @Test
     public void isRealReturnsTrueIfReal() {
-        assertEquals(true, Lexer.isReal("123.123"));
+        assertTrue(Lexer.isReal("123.123"));
     }
 
     @Test
     public void isRealReturnsFalseIfNum() {
-        assertEquals(false, Lexer.isReal("123"));
+        assertFalse(Lexer.isReal("123"));
     }
 
     @Test
     public void isRealReturnsFalseIfString() {
-        assertEquals(false, Lexer.isReal("abcd9.9"));
+        assertFalse(Lexer.isReal("abcd9.9"));
     }
 
     @Test
     public void isRealReturnsFalseIfIncorrectFormat() {
-        assertEquals(false, Lexer.isReal("99.99.99"));
+        assertFalse(Lexer.isReal("99.99.99"));
     }
 
     // isNum function tests
     @Test
     public void isNumReturnsTrueIfNum() {
-        assertEquals(true, Lexer.isNum("99"));
+        assertTrue(Lexer.isNum("99"));
     }
 
     @Test
     public void isNumReturnsFalseIfString() {
-        assertEquals(false, Lexer.isNum("123a"));
+        assertFalse(Lexer.isNum("123a"));
     }
 
     @Test
     public void isNumReturnsFalseIfReal() {
-        assertEquals(false, Lexer.isNum("123.123"));
+        assertFalse(Lexer.isNum("123.123"));
     }
 
     // getNextToken
