@@ -101,14 +101,6 @@ public class Lexer {
                     tokens.add(getToken(temp));
             }
         }
-
-        for (Token tok : tokens) {
-            if (tok == null) {
-                System.out.println("NULL");
-            } else {
-                System.out.println(tok.toString());
-            }
-        }
     }
 
     public Token getToken(String pattern) {
