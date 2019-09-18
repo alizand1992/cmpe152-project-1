@@ -110,8 +110,6 @@ public class Lexer {
                         flag = true;
                     }
 
-                    System.out.println("Flag: " + flag + "\ntoken: " + tokens.getLast().toString() + "\nline: " + line);
-
                     if (!flag) {
                         tokens.add(null);
                     }
