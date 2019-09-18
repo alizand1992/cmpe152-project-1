@@ -42,4 +42,19 @@ public class Token {
     public  String getPattern() {
         return pattern;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(obj instanceof Token)) {
+            return false;
+        }
+
+        Token rhs = (Token)obj;
+
+        return this.name.equals(rhs.getName()) && this.pattern.equals(rhs.getPattern());
+    }
 }

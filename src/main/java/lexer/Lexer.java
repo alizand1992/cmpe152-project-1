@@ -13,13 +13,7 @@ public class Lexer {
     public Lexer(String str) {
         tokens = new LinkedList<>();
         line = str;
-        tokens.add(new Token("abcd", "ID"));
-        tokens.add(new Token(";"));
     }
-
-//    public Lexer(Lexer rhs) {
-//        tokens = (LinkedList<Token>)rhs.getTokens();
-//    }
 
     public Token getNextToken() {
         return null;
@@ -29,13 +23,15 @@ public class Lexer {
         return this.tokens;
     }
 
-    public static boolean isValid(String pattern) {
-        return false;
-    }
-
     public static boolean isId(String pattern) {
         return false;
     }
-}
 
-//this is me 
+    public static boolean isNum(String pattern) {
+        return false;
+    }
+
+    public static boolean isReal(String pattern) {
+        return  false;
+    }
+}
