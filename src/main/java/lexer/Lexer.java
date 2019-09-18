@@ -6,21 +6,25 @@ import java.util.LinkedList;
 public class Lexer {
     private LinkedList<Token> tokens;
     private ArrayList<String> lines;
+    private int index;
 
     public Lexer() {
         tokens = new LinkedList<>();
         lines = new ArrayList<>();
+        index = 0;
     }
 
     public Lexer(String line) {
         tokens = new LinkedList<>();
         lines = new ArrayList<>();
         lines.add(line);
+        tokenize();
     }
 
     public Lexer(ArrayList<String> lines) {
         tokens = new LinkedList<>();
         this.lines = lines;
+        tokenize();
     }
 
     /**
@@ -30,7 +34,12 @@ public class Lexer {
      * @return single token at the next index
      */
     public Token getNextToken() {
-        return null;
+        if (index < tokens.size()) {
+            index++;
+            return tokens.get(index - 1);
+        }
+
+        return TokenType.getTokenFromPattern("\26");
     };
 
     /**
@@ -46,6 +55,14 @@ public class Lexer {
         if (lines == null) {
             return;
         }
+
+        for (String line : lines) {
+            tokenizeLine(line);
+        }
+    }
+
+    public void tokenizeLine(String line) {
+
     }
 
     /**
