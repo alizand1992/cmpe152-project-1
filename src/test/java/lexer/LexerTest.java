@@ -9,6 +9,7 @@ public class LexerTest {
     public void idWithSemiColonIsRecogonizedAsTwoTokens() {
         // Example abcd;
         Lexer lex = new Lexer("abcd;");
+
         assertEquals(2, lex.getTokens().size());
     }
 

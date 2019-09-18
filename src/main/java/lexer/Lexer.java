@@ -8,6 +8,13 @@ public class Lexer {
     private ArrayList<String> lines;
     private int index;
 
+    private static final char[] noSpaceNeeded = {
+        ' ', ';', '=', '<',
+        '>', '(', ')', '{',
+        '}', '+', '-', '*',
+        '/', '&', '!', '|'
+    };
+
     public Lexer() {
         tokens = new LinkedList<>();
         lines = new ArrayList<>();
@@ -63,39 +70,59 @@ public class Lexer {
 
     public void tokenizeLine(String line) {
         line = line.trim();
-        String current = line;
+        String temp = "";
 
-        for (int i = current.length(); i >= 0; i--) {
-            if (current.length() == 0) {
-                return;
-            }
+        for (int i = 0; i < line.length(); i++) {
+            temp += line.charAt(i);
 
-            boolean foundToken = false;
+            if (getToken(temp) == null) {
+                char lastChar = temp.charAt(temp.length() - 1);
+                if (temp.length() != 1) {
+                    temp = temp.substring(0, temp.length() - 1);
+                    boolean flag = false;
 
-            if (isId(current)) {
-                foundToken = true;
-                tokens.add(new Token(current, "ID"));
-            } else if (isReal(current)) {
-                foundToken = true;
-                tokens.add(new Token(current, "REAL"));
-            } else if (isNum(current)) {
-                foundToken = true;
-                tokens.add(new Token(current, "NUM"));
-            } else if (TokenType.getTokenFromPattern(current) != null) {
-                foundToken = true;
-                tokens.add(TokenType.getTokenFromPattern(current));
-            }
+                    for (int j = 0; j < noSpaceNeeded.length; j++) {
+                        if (lastChar == noSpaceNeeded[j]) {
+                            flag = true;
+                            tokens.add(getToken(temp));
+                            line = line.substring(temp.length()).trim();
+                            temp = "";
+                            i = -1;
+                            break;
+                        }
+                    }
 
-            if (foundToken) {
-                line = line.substring(tokens.getLast().getPattern().length());
-                current = line;
-                i = current.length() + 1;
-            } else if (current.length() == 0) {
-                tokens.add(null);
+                    if (!flag) {
+                        tokens.add(null);
+                    }
+                }
             } else {
-                current = current.substring(0, current.length() - 1);
+                if (temp.length() == line.length())
+                    tokens.add(getToken(temp));
             }
         }
+
+        for (Token tok : tokens) {
+            if (tok == null) {
+                System.out.println("NULL");
+            } else {
+                System.out.println(tok.toString());
+            }
+        }
+    }
+
+    public Token getToken(String pattern) {
+        if (TokenType.getTokenFromPattern(pattern) != null) {
+            return TokenType.getTokenFromPattern(pattern);
+        } else if (isId(pattern)) {
+            return new Token(pattern, "ID");
+        } else if (isReal(pattern)) {
+            return new Token(pattern, "REAL");
+        } else if (isNum(pattern)) {
+            return new Token(pattern, "NUM");
+        }
+
+        return null;
     }
 
     /**
