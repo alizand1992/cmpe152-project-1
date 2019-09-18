@@ -62,7 +62,37 @@ public class Lexer {
     }
 
     public void tokenizeLine(String line) {
+        line = line.trim();
+        String current = line;
 
+        for (int i = current.length(); i >= 0; i--) {
+            boolean foundToken = false;
+
+            if (isId(current)) {
+                foundToken = true;
+                tokens.add(new Token(current, "ID"));
+            } else if (isReal(current)) {
+                foundToken = true;
+                tokens.add(new Token(current, "REAL"));
+            } else if (isNum(current)) {
+                foundToken = true;
+                tokens.add(new Token(current, "NUM"));
+            } else if (TokenType.getTokenFromPattern(current) != null) {
+                foundToken = true;
+                tokens.add(TokenType.getTokenFromPattern(current));
+            }
+
+            if (foundToken) {
+                current = current.substring(tokens.getLast().getPattern().length());
+                i = current.length();
+            } else if (current.length() == 0) {
+                System.out.println("NULL: " + current);
+                tokens.add(null);
+            } else {
+                current = current.substring(0, current.length() - 1);
+                System.out.println(current);
+            }
+        }
     }
 
     /**
