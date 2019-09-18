@@ -114,4 +114,10 @@ public class LexerTest {
         Lexer lex = new Lexer("9abc");
         assertEquals(null, lex.getNextToken());
     }
+
+    @Test
+    public void lineWithSpaceAtTheEnd() {
+        Lexer lex = new Lexer("int a+b; ");
+        assertEquals(5, lex.getTokens().size());
+    }
 }

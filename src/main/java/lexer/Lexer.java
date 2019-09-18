@@ -69,7 +69,7 @@ public class Lexer {
     }
 
     public void tokenizeLine(String line) {
-        line = line.trim();
+        line = discardFoundTokenAndSpace("", line);
         String temp = "";
 
         for (int i = 0; i < line.length(); i++) {
