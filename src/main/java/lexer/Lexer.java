@@ -78,7 +78,7 @@ public class Lexer {
             if (getToken(temp) == null) {
                 char lastChar = temp.charAt(temp.length() - 1);
                 if (temp.length() != 1) {
-                    temp = temp.substring(0, temp.length() - 1);
+                    temp = removeLastChar(temp);
                     boolean flag = false;
 
                     boolean currentCharDoesNotNeedSpaces = false;
@@ -119,6 +119,14 @@ public class Lexer {
                     tokens.add(getToken(temp));
             }
         }
+    }
+
+    private String removeLastChar(String str) {
+        String newStr = "";
+        for (int i = 0; i < str.length() - 1; i++) {
+            newStr += str.charAt(i);
+        }
+        return newStr;
     }
 
     private String discardFoundTokenAndSpace(String temp, String line) {
