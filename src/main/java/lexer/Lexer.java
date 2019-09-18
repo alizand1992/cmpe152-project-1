@@ -96,7 +96,7 @@ public class Lexer {
                             if (lastChar == noSpaceNeeded[j]) {
                                 flag = true;
                                 tokens.add(getToken(temp));
-                                line = line.substring(temp.length()).trim();
+                                line = discardFoundTokenAndSpace(temp, line);
                                 temp = "";
                                 i = -1;
                                 break;
@@ -104,7 +104,7 @@ public class Lexer {
                         }
                     } else {
                         tokens.add(getToken(temp));
-                        line = line.substring(temp.length()).trim();
+                        line = discardFoundTokenAndSpace(temp, line);
                         temp = "";
                         i = -1;
                         flag = true;
@@ -119,6 +119,19 @@ public class Lexer {
                     tokens.add(getToken(temp));
             }
         }
+    }
+
+    private String discardFoundTokenAndSpace(String temp, String line) {
+        String newLine = "";
+
+        for (int i = temp.length(); i < line.length(); i++) {
+            if (newLine.length() == 0 && line.charAt(i) == ' ') {
+                continue;
+            }
+            newLine += line.charAt(i);
+        }
+
+        return newLine;
     }
 
     public Token getToken(String pattern) {
