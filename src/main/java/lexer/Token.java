@@ -60,6 +60,6 @@ public class Token {
 
     @Override
     public String toString() {
-        return getName() + " - " + getPattern();
+        return getName() + "\t" + getPattern();
     }
 }
