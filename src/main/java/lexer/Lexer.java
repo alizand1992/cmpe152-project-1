@@ -66,6 +66,10 @@ public class Lexer {
         String current = line;
 
         for (int i = current.length(); i >= 0; i--) {
+            if (current.length() == 0) {
+                return;
+            }
+
             boolean foundToken = false;
 
             if (isId(current)) {
@@ -83,14 +87,13 @@ public class Lexer {
             }
 
             if (foundToken) {
-                current = current.substring(tokens.getLast().getPattern().length());
-                i = current.length();
+                line = line.substring(tokens.getLast().getPattern().length());
+                current = line;
+                i = current.length() + 1;
             } else if (current.length() == 0) {
-                System.out.println("NULL: " + current);
                 tokens.add(null);
             } else {
                 current = current.substring(0, current.length() - 1);
-                System.out.println(current);
             }
         }
     }
