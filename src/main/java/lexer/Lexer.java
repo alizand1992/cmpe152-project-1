@@ -69,7 +69,7 @@ public class Lexer {
     }
 
     public void tokenizeLine(String line) {
-        line = ourTrim(line);
+        line = discardFoundTokenAndSpace("", line);
         String temp = "";
 
         for (int i = 0; i < line.length(); i++) {
@@ -78,7 +78,7 @@ public class Lexer {
             if (getToken(temp) == null) {
                 char lastChar = temp.charAt(temp.length() - 1);
                 if (temp.length() != 1) {
-                    temp = temp.substring(0, temp.length() - 1);
+                    temp = removeLastChar(temp);
                     boolean flag = false;
 
                     boolean currentCharDoesNotNeedSpaces = false;
@@ -96,7 +96,7 @@ public class Lexer {
                             if (lastChar == noSpaceNeeded[j]) {
                                 flag = true;
                                 tokens.add(getToken(temp));
-                                line = ourTrim(line.substring(temp.length()));
+                                line = discardFoundTokenAndSpace(temp, line);
                                 temp = "";
                                 i = -1;
                                 break;
@@ -104,13 +104,11 @@ public class Lexer {
                         }
                     } else {
                         tokens.add(getToken(temp));
-                        line = ourTrim(line.substring(temp.length()));
+                        line = discardFoundTokenAndSpace(temp, line);
                         temp = "";
                         i = -1;
                         flag = true;
                     }
-
-                    System.out.println("Flag: " + flag + "\ntoken: " + tokens.getLast().toString() + "\nline: " + line);
 
                     if (!flag) {
                         tokens.add(null);
@@ -121,6 +119,27 @@ public class Lexer {
                     tokens.add(getToken(temp));
             }
         }
+    }
+
+    private String removeLastChar(String str) {
+        String newStr = "";
+        for (int i = 0; i < str.length() - 1; i++) {
+            newStr += str.charAt(i);
+        }
+        return newStr;
+    }
+
+    private String discardFoundTokenAndSpace(String temp, String line) {
+        String newLine = "";
+
+        for (int i = temp.length(); i < line.length(); i++) {
+            if (newLine.length() == 0 && line.charAt(i) == ' ') {
+                continue;
+            }
+            newLine += line.charAt(i);
+        }
+
+        return newLine;
     }
 
     public Token getToken(String pattern) {
@@ -242,27 +261,4 @@ public class Lexer {
     private static boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
-    // removes leading and trailing spaces
-    private static String ourTrim(String s){
-        String temp = "";
-        boolean first = true;
-        for (int x = 0; x < s.length(); x++){
-            if (s.charAt(x) == ' ' && first){}
-            else {
-                first = false;
-                temp += s.charAt(x);
-            }
-        }
-        boolean last = true;
-        for (int x = 0; x < temp.length(); x++){
-            if (temp.charAt(temp.length()-1-x) == ' ' && last);
-            else {
-                last = false;
-                temp = temp.substring(0,temp.length()-x);
-                break;
-            }
-        };
-        return temp;
-    }
-    
 }
