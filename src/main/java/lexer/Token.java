@@ -60,6 +60,10 @@ public class Token {
 
     @Override
     public String toString() {
-        return getName() + "\t" + getPattern();
+        if (getName().length() > 8) {
+            return getName() + "\t" + getPattern();
+        } else {
+            return getName() + "\t\t" + getPattern();
+        }
     }
 }

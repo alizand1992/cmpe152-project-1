@@ -126,4 +126,13 @@ public class LexerTest {
         Lexer lex = new Lexer("int a+b; ");
         assertEquals(5, lex.getTokens().size());
     }
+
+    @Test
+    public void combinedCharactersReturnLongerPatternToken() {
+        Lexer lex = new Lexer("if (a <= c)");
+        lex.getNextToken();
+        lex.getNextToken();
+        lex.getNextToken();
+        assertEquals(new Token("<=", "LE"), lex.getNextToken());
+    }
 }
