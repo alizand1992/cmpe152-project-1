@@ -117,6 +117,6 @@ Tests run: 24, Failures: 0, Errors: 0, Skipped: 0
 
 ## Authors:
 * [lucy chibukhchyan](https://github.com/lucyc426)
+* [Andrew Kosche](https://github.com/Andrewkosche123)
 * [Lorena Silva](https://github.com/lorena9s)
 * [Ali Zand](https://github.com/alizand1992)
-* [Andrew Kosche](https://github.com/Andrewkosche123)
