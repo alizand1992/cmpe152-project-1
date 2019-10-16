@@ -133,7 +133,7 @@ public class Lexer {
         String newLine = "";
 
         for (int i = temp.length(); i < line.length(); i++) {
-            if (newLine.length() == 0 && line.charAt(i) == ' ') {
+            if (newLine.length() == 0 && (line.charAt(i) == ' ' || line.charAt(i) == '\t')) {
                 continue;
             }
             newLine += line.charAt(i);

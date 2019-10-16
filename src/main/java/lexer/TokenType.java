@@ -25,13 +25,10 @@ public class TokenType {
         types.put("false", new Token("false", "FALSE"));
         types.put("for", new Token("for", "FOR"));
         types.put(">=", new Token(">=", "GE"));
-        types.put("id", new Token("id", "ID"));
         types.put("if", new Token("if", "IF"));
         types.put("<=", new Token("<=", "LE"));
         types.put("!=", new Token("!=", "NE"));
-        types.put("num", new Token("num", "NUM"));
         types.put("||", new Token("||", "OR"));
-        types.put("real", new Token("real", "REAL"));
         types.put("true", new Token("true", "TRUE"));
         types.put("while", new Token("while", "WHILE"));
         types.put(";", new Token(";"));
