@@ -46,8 +46,8 @@ public class Scope {
     /**
      * Pops the latest scope when exiting outside of the scope
      */
-    public void exitScope() {
-
+    public HashSet<Token> exitScope() {
+        return scopes.pop();
     }
 
     /**
@@ -79,7 +79,7 @@ public class Scope {
      * @return itself so it is chainable
      */
     public Scope createScope(HashSet<Token> scope) {
-
+        this.scopes.push(scope);
         return this;
     }
 

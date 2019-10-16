@@ -12,4 +12,12 @@ public class ScopeTest {
 
         assertTrue(sc.getScope().contains(tok));
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addTokenDoesNotAddATokenTwice() {
+        Scope sc = new Scope();
+        Token tok = new Token("ABC", "ID")
+        sc.addToken(tok);
+        sc.addToken(tok);
+    }
 }
