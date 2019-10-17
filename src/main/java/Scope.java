@@ -1,10 +1,10 @@
 import lexer.Token;
 
 import java.util.HashSet;
-import java.util.Stack;
+import java.util.LinkedList;
 
 public class Scope {
-    private Stack<HashSet<Token>> scopes = new Stack<>();
+    private LinkedList<HashSet<Token>> scopes = new LinkedList<>();
 
     /**
      * Default constructor
@@ -61,6 +61,18 @@ public class Scope {
 
         return this;
     }
+    /**
+     * returns the latest scope
+     *
+     * @return top hashset in stack
+     */
+    public HashSet<Token> getScope() {
+        if (scopes.isEmpty()) {
+            return null;
+        }
+
+        return scopes.peek();
+    }
 
     /**
      * Creates a new HashSet and pushes it to the top of the stack
@@ -83,16 +95,4 @@ public class Scope {
         return this;
     }
 
-    /**
-     * returns the latest scope
-     *
-     * @return top hashset in stack
-     */
-    public HashSet<Token> getScope() {
-        if (scopes.empty()) {
-            return null;
-        }
-
-        return scopes.peek();
-    }
 }
