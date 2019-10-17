@@ -51,19 +51,23 @@ public class ScopeTest {
     @Test
     public void addTokenWillAddTheTokenToTheTopScope() {
         Scope sc = new Scope();
-        Token tok = new Token("ABC", "ID");
-        sc.createScope();
-        sc.createScope();
-        sc.addToken(tok);
+        sc.createScope().createScope();
+        sc.addToken(tok1);
         sc.exitScope();
-        assertFalse(sc.getScope().contains(tok));
+        assertFalse(sc.getScope().contains(tok1));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addTokenDoesNotAddATokenTwice() {
         Scope sc = new Scope();
-        Token tok = new Token("ABC", "ID");
-        sc.addToken(tok);
-        sc.addToken(tok);
+        sc.addToken(tok1);
+        sc.addToken(tok1);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addTokenDoesNotAddTokenTwiceEvenWhenInHigherScopes() {
+        Scope sc = new Scope();
+        sc.addToken(tok1).createScope().addToken(tok1);
+    }
+
 }

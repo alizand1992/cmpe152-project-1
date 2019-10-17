@@ -47,7 +47,7 @@ public class Scope {
      * Pops the latest scope when exiting outside of the scope
      */
     public HashSet<Token> exitScope() {
-        return scopes.pop();
+        return scopes.removeLast();
     }
 
     /**
@@ -58,6 +58,17 @@ public class Scope {
      * @throws IllegalArgumentException Error in case of duplicate token
      */
     public Scope addToken(Token tok) throws IllegalArgumentException {
+        if (scopes.isEmpty()) {
+            createScope();
+        }
+
+        if (scopes.peekLast().contains(tok)) {
+            throw new IllegalArgumentException("Cannot Insert a Token Twice");
+        }
+
+        HashSet<Token> hs = scopes.removeLast();
+        hs.add(tok);
+        scopes.add(hs);
 
         return this;
     }
@@ -80,7 +91,7 @@ public class Scope {
      * @return itself so it is chainable
      */
     public Scope createScope() {
-
+        scopes.push(new HashSet<Token>());
         return this;
     }
 
