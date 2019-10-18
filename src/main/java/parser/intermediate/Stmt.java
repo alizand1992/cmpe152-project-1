@@ -1,4 +1,4 @@
 package parser.intermediate;
 
-public class Stmt {
+public class Stmt extends Node {
 }
