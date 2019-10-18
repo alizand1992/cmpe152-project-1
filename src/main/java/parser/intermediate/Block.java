@@ -1,4 +1,4 @@
 package parser.intermediate;
 
-public class Block {
+public class Block extends Node {
 }
