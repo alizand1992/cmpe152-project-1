@@ -4,14 +4,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Scope {
-    private LinkedList<HashSet<Token>> scopes = new LinkedList<>();
+    private LinkedList<HashSet<Token>> scopes;
 
     /**
      * Default constructor
      * does nothing
      */
     public Scope() {
-
+        scopes = new LinkedList<>();
     }
 
     /**
@@ -20,7 +20,8 @@ public class Scope {
      * @param scope scope to be added.
      */
     public Scope(HashSet<Token> scope) {
-
+        this();
+        scopes.push(scope);
     }
 
     /**
@@ -29,7 +30,7 @@ public class Scope {
      * @param scope copy scope object
      */
     public Scope(Scope scope) {
-
+        scopes = (LinkedList<HashSet<Token>>)scope.getAllScopes().clone();
     }
 
     /**
@@ -83,6 +84,10 @@ public class Scope {
         }
 
         return scopes.peek();
+    }
+
+    public LinkedList<HashSet<Token>> getAllScopes() {
+        return scopes;
     }
 
     /**

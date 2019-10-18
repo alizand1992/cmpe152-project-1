@@ -63,11 +63,4 @@ public class ScopeTest {
         sc.addToken(tok1);
         sc.addToken(tok1);
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void addTokenDoesNotAddTokenTwiceEvenWhenInHigherScopes() {
-        Scope sc = new Scope();
-        sc.addToken(tok1).createScope().addToken(tok1);
-    }
-
 }
