@@ -219,7 +219,6 @@ public class Lexer {
         return hasDec;
     }
 
-
     // Private helper methods
 
     /**

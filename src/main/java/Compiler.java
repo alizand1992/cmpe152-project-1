@@ -1,5 +1,6 @@
 import lexer.Lexer;
 import lexer.Token;
+import parser.Parser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -32,19 +33,8 @@ public class Compiler {
 
         Lexer lex = new Lexer(lines);
 
-        while (true) {
-            Token tok = lex.getNextToken();
+        Parser parser = new Parser(lex);
 
-            if (tok == null) {
-                System.out.println("Invalid token entered.");
-                break;
-            }
-
-            if (!tok.getName().equals("EOF")) {
-                System.out.println(tok.toString());
-            } else {
-                break;
-            }
-        }
+        parser.parse();
     }
 }
