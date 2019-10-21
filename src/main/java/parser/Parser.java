@@ -4,6 +4,8 @@ import lexer.Lexer;
 import lexer.Token;
 import parser.intermediate.*;
 
+import java.util.concurrent.ExecutionException;
+
 public class Parser {
     private Lexer lex;
     private Scope scope;
@@ -87,12 +89,32 @@ public class Parser {
      * @throws Exception
      */
     public Stmt stmt() throws Exception {
+        Token tok = lex.getNextToken();
 
+        switch (tok.getName()) {
+            case ";":
+                return null;
+            case "IF":
+                break;
+            case "WHILE":
+                break;
+            case "DO":
+                break;
+            case "BREAK":
+                break;
+            case "{":
+                return block();
+            default:
+                return assign();
+        }
         return null;
     }
 
     // assign -> id = allexpr;
+    public Stmt assign() throws Exception {
 
+        return null;
+    }
 
 
     // allexpr -> allexpr || andexpr | andexpr
