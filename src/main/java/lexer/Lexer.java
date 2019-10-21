@@ -41,13 +41,18 @@ public class Lexer {
      * @return single token at the next index
      */
     public Token getNextToken() {
-        if (index < tokens.size()) {
-            index++;
-            return tokens.get(index - 1);
-        }
+        Token tok = peek();
+        index++;
 
-        return TokenType.getTokenFromPattern("\26");
+        return tok;
     };
+
+    public Token peek() {
+        if (index < tokens.size()) {
+            return tokens.get(index);
+        }
+        return TokenType.getTokenFromPattern("\26");
+    }
 
     /**
      * This method returns all of the tokens in form of an LinkedList.

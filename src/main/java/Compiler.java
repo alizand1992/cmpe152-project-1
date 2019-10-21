@@ -35,6 +35,6 @@ public class Compiler {
 
         Parser parser = new Parser(lex);
 
-        parser.parse();
+//        parser.parse();
     }
 }
