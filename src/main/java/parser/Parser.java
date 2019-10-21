@@ -42,17 +42,19 @@ public class Parser {
         return new Block(s);
     }
 
-    private void match(String pattern) throws Exception {
-        match(pattern, true);
+    private boolean match(String pattern) throws Exception {
+        return match(pattern, true);
     }
 
-    private void match(String pattern, boolean discard) throws Exception {
+    private boolean match(String pattern, boolean discard) throws Exception {
         if (!lex.peek().getPattern().equals(pattern)) {
             throw new Exception("Syntax Error!");
         }
         if (discard) {
             lex.getNextToken();
         }
+
+        return true;
     }
 
     // decls -> E | decls decl
@@ -60,16 +62,38 @@ public class Parser {
     // type -> int | float | bool
 
     // stmts -> E | stmts stmt
+
+    /**
+     * Calls statement for the first token and itself for the remaining this way it recursively goes throw each token.
+     * This allows the all statements to be processed until the end of the block.
+     *
+     * @return
+     * @throws Exception Syntax error
+     */
     public Stmt stmts() throws Exception {
-        match("}", false);
-        return new Stmt();
+        if (match("}", false)) {
+            return null;
+        }
+
+        return new StatementSequence(stmt(), stmts());
     }
 
+    /**
+     * This checks each actual statement based ont the following rule:
+     * stmt -> assign | if (allexpr) stmt | if (allexpr) stmt else stmt | while (allexpr) stmt |
+     *         do stmt while (allexpr); | for (assign allexpr; incdecexpr) stmt | break; | block
+     *
+     * @return
+     * @throws Exception
+     */
+    public Stmt stmt() throws Exception {
+
+        return null;
+    }
 
     // assign -> id = allexpr;
 
-    // stmt -> assign | if (allexpr) stmt | if (allexpr) stmt else stmt | while (allexpr) stmt |
-    //     do stmt while (allexpr); | for (assign allexpr; incdecexpr) stmt | break; | block
+
 
     // allexpr -> allexpr || andexpr | andexpr
 
