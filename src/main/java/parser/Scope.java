@@ -42,7 +42,11 @@ public class Scope {
      * @return false or true result of the search
      */
     public boolean tokenInScope(Token tok) {
-
+        for (HashSet<Token> sc : getAllScopes()) {
+            if (sc.contains(tok)) {
+                return true;
+            }
+        }
         return false;
     }
 

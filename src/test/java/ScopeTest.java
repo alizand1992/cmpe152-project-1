@@ -64,4 +64,19 @@ public class ScopeTest {
         sc.addToken(tok1);
         sc.addToken(tok1);
     }
+
+    @Test
+    public void tokenInScopeFindsTokenInTopScope() {
+        Scope sc = new Scope();
+        sc.addToken(tok1);
+        assertTrue(sc.tokenInScope(tok1));
+    }
+
+    @Test
+    public void tokenInScopeFindsTokenInAllScopes() {
+        Scope sc = new Scope();
+        sc.addToken(tok1);
+        sc.createScope();
+        assertTrue(sc.tokenInScope(tok1));
+    }
 }
