@@ -118,7 +118,17 @@ public class Parser {
                 stmts.add(stmt());
                 return new While(expr, stmts);
             case "DO":
-                break;
+                // Get the statements inside the do
+                stmts.add(stmt());
+                // verify after the do statement there is a while
+                match("while");
+                // Add expression for while.
+                match("(");
+                expr = allexpr();
+                match(")");
+                // Do while must end in a ';'
+                match(";");
+                return new Do(expr, stmts);
             case "BREAK":
                 break;
             case "{":
