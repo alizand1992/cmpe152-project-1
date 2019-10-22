@@ -95,6 +95,8 @@ public class Parser {
             case ";":
                 return null;
             case "IF":
+                match("(");
+
                 break;
             case "WHILE":
                 break;
