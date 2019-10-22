@@ -193,11 +193,20 @@ public class Parser {
 
         return null;
     }
+
+    // STILL NEEDS WORK
     // factor -> (allexpr) | incdecexpr | id | num | real | true | false
-//    public Factor factor() {
-//
-//        return
-//    }
+    public Stmt factor() {
+        Token tok = lex.getNextToken();
+        switch (tok.getName()) {
+            case "TRUE":
+            case "FALSE":
+                return new Stmt(tok.getName());
+
+        }
+
+        return null;
+    }
 
     private void idInScope(Token id) throws Exception {
         if (!scope.tokenInScope(id))
