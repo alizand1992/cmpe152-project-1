@@ -112,7 +112,11 @@ public class Parser {
 
                 return new IfElse(expr, stmts);
             case "WHILE":
-                break;
+                match("(");
+                expr = allexpr();
+                match(")");
+                stmts.add(stmt());
+                return new While(expr, stmts);
             case "DO":
                 break;
             case "BREAK":
