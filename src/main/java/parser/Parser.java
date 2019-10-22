@@ -45,12 +45,12 @@ public class Parser {
         return new Block(s);
     }
 
-    private boolean match(String pattern) throws Exception {
-        return match(pattern, true);
+    private boolean match(String name) throws Exception {
+        return match(name, true);
     }
 
-    private boolean match(String pattern, boolean discard) throws Exception {
-        if (!lex.peek().getPattern().equals(pattern)) {
+    private boolean match(String name, boolean discard) throws Exception {
+        if (!lex.peek().getName().equals(name)) {
             throw new Exception("Syntax Error!");
         }
         if (discard) {
@@ -105,7 +105,7 @@ public class Parser {
                 stmts.add(stmt());
 
                 // Does it have an else
-                if (lex.peek().getName().equals("ELSE")) {
+                if (match("ELSE", false)) {
                     lex.getNextToken();
                     stmts.add(stmt());
                 }
@@ -121,7 +121,7 @@ public class Parser {
                 // Get the statements inside the do
                 stmts.add(stmt());
                 // verify after the do statement there is a while
-                match("while");
+                match("WHILE");
                 // Add expression for while.
                 match("(");
                 expr = allexpr();
@@ -154,12 +154,10 @@ public class Parser {
     // STILL NEEDS WORK
     // assign -> id = allexpr;
     public Stmt assign() throws Exception {
-        match("id", false);
-        Token id = lex.getNextToken();
+        match("ID", false);
 
         // Throw an error if the id is not already decleared.
-        if (!scope.tokenInScope(id))
-            throw new Exception("Id not found");
+        idInScope(lex.getNextToken());
 
         match("=");
 
@@ -188,7 +186,10 @@ public class Parser {
     // term -> term * factor | term / factor | factor
 
     // incdecexpr -> id++ | id--
-    public Stmt incdecexpr() {
+    public Stmt incdecexpr() throws Exception {
+        if (match("ID", false)) {
+            idInScope(lex.getNextToken());
+        }
 
         return null;
     }
@@ -197,5 +198,11 @@ public class Parser {
 //
 //        return
 //    }
+
+    private void idInScope(Token id) throws Exception {
+        if (!scope.tokenInScope(id))
+            throw new Exception("Id not found");
+
+    }
 
 }
