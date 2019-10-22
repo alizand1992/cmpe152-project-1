@@ -129,14 +129,26 @@ public class Parser {
                 // Do while must end in a ';'
                 match(";");
                 return new Do(expr, stmts);
+            case "FOR":
+                // Match the paranthesis and the expression/statement inside of it
+                //   eg.  (int i = 0; i < 123; i++)
+                match("(");
+                stmts.add(assign());
+                expr = (allexpr());
+                match(";");
+                stmts.add(incdecexpr());
+                match(")");
+                // Capture statements inside the for loop
+                stmts.add(stmt());
+
             case "BREAK":
-                break;
+                match(";");
+                return new Break();
             case "{":
                 return block();
             default:
                 return assign();
         }
-        return null;
     }
 
     // assign -> id = allexpr;
@@ -163,7 +175,10 @@ public class Parser {
     // term -> term * factor | term / factor | factor
 
     // incdecexpr -> id++ | id--
+    public Stmt incdecexpr() {
 
+        return null;
+    }
     // factor -> (allexpr) | incdecexpr | id | num | real | true | false
 //    public Factor factor() {
 //
