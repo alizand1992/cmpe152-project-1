@@ -151,12 +151,25 @@ public class Parser {
         }
     }
 
+    // STILL NEEDS WORK
     // assign -> id = allexpr;
     public Stmt assign() throws Exception {
+        match("id", false);
+        Token id = lex.getNextToken();
 
+        // Throw an error if the id is not already decleared.
+        if (!scope.tokenInScope(id))
+            throw new Exception("Id not found");
+
+        match("=");
+
+        // GOTTA FIGURE OUT WHAT TO DO WITH EXPR
+        // Set object in example is a good guide.
+        Expression expr = allexpr();
+
+        match(";");
         return null;
     }
-
 
     // allexpr -> allexpr || andexpr | andexpr
     public Expression allexpr() throws Exception {
