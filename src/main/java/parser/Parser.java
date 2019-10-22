@@ -4,6 +4,7 @@ import lexer.Lexer;
 import lexer.Token;
 import parser.intermediate.*;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class Parser {
@@ -90,14 +91,26 @@ public class Parser {
      */
     public Stmt stmt() throws Exception {
         Token tok = lex.getNextToken();
+        Expression expr;
+        ArrayList<Stmt> stmts = new ArrayList<>();
 
         switch (tok.getName()) {
             case ";":
                 return null;
             case "IF":
+                // If condition expression
                 match("(");
+                expr = allexpr();
+                match(")");
+                stmts.add(stmt());
 
-                break;
+                // Does it have an else
+                if (lex.peek().getName().equals("ELSE")) {
+                    lex.getNextToken();
+                    stmts.add(stmt());
+                }
+
+                return new IfElse(expr, stmts);
             case "WHILE":
                 break;
             case "DO":
@@ -120,6 +133,10 @@ public class Parser {
 
 
     // allexpr -> allexpr || andexpr | andexpr
+    public Expression allexpr() throws Exception {
+
+        return null;
+    }
 
     // andexpr -> andexpr && equal | equal
 

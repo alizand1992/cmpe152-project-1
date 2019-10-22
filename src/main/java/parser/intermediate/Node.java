@@ -28,4 +28,8 @@ public class Node {
     public String getLabel() {
         return this.label;
     }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }
