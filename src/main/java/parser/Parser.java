@@ -256,17 +256,24 @@ public class Parser {
 
     // STILL NEEDS WORK
     // factor -> (allexpr) | incdecexpr | id | num | real | true | false
-    public Stmt factor() {
+    public Stmt factor() throws Exception {
         Token tok = lex.getNextToken();
         switch (tok.getName()) {
+            case "(":
+                allexpr();
+                match(")");
             case "TRUE":
             case "FALSE":
                 return new Stmt(tok.getName());
             case "ID":
+                idInScope(tok);
                 break;
             case "NUM":
             case "REAL":
+                // TYPE CHECK
                 break;
+            default: // Increment Decrement
+                incdecexpr();
         }
 
         return null;
