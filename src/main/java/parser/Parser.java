@@ -251,6 +251,15 @@ public class Parser {
             idInScope(lex.getNextToken());
         }
 
+        Token tok = lex.peek();
+        if (tok.getName().equals("+")) {
+            match("+");
+            match("+");
+        } else if (tok.getName().equals("-")) {
+            match("-");
+            match("-");
+        }
+
         return null;
     }
 
