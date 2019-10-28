@@ -76,6 +76,10 @@ public class Parser {
         match("ID", false);
         scope.addToken(lex.getNextToken());
         match(";");
+
+        if (lex.peek().getName().equals("BASE_TYPE")) {
+            decls();
+        }
     }
 
     // type -> int | float | bool
@@ -115,16 +119,16 @@ public class Parser {
      */
     public Stmt stmt() throws Exception {
         Token tok = lex.peek();
-        if (!tok.getName().equals("{")) {
-            tok = lex.getNextToken();
-        }
+
         Expression expr;
         ArrayList<Stmt> stmts = new ArrayList<>();
 
         switch (tok.getName()) {
             case ";":
+                lex.getNextToken();
                 return null;
             case "IF":
+                lex.getNextToken();
                 // If condition expression
                 match("(");
                 expr = allexpr();
@@ -139,12 +143,14 @@ public class Parser {
 
                 return new IfElse(expr, stmts);
             case "WHILE":
+                lex.getNextToken();
                 match("(");
                 expr = allexpr();
                 match(")");
                 stmts.add(stmt());
                 return new While(expr, stmts);
             case "DO":
+                lex.getNextToken();
                 // Get the statements inside the do
                 stmts.add(stmt());
                 // verify after the do statement there is a while
@@ -157,6 +163,7 @@ public class Parser {
                 match(";");
                 return new Do(expr, stmts);
             case "FOR":
+                lex.getNextToken();
                 // Match the paranthesis and the expression/statement inside of it
                 //   eg.  (int i = 0; i < 123; i++)
                 match("(");
@@ -167,10 +174,12 @@ public class Parser {
                 match(")");
                 // Capture statements inside the for loop
                 stmts.add(stmt());
-
             case "BREAK":
+                lex.getNextToken();
                 match(";");
                 return new Break();
+            case "BASE_TYPE":
+                decls();
             case "{":
                 return block();
             default:
@@ -191,6 +200,11 @@ public class Parser {
         // GOTTA FIGURE OUT WHAT TO DO WITH EXPR
         // Set object in example is a good guide.
         Expression expr = allexpr();
+
+        // For only when to ids get set to eachother
+        // THIS NEEDS TO CHANGE
+        match("ID", false);
+        idInScope(lex.getNextToken());
 
         match(";");
         return null;

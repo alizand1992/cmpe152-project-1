@@ -43,8 +43,10 @@ public class Scope {
      */
     public boolean tokenInScope(Token tok) {
         for (HashSet<Token> sc : getAllScopes()) {
-            if (sc.contains(tok)) {
-                return true;
+            for (Token rhs : sc) {
+                if (rhs.equals(tok)) {
+                    return true;
+                }
             }
         }
         return false;

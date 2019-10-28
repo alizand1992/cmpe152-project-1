@@ -10,9 +10,11 @@ import static org.junit.Assert.*;
 
 public class ScopeTest {
     Token tok1;
+    Token tok2;
     @Before
     public void init() {
         tok1 = new Token("ABC", "ID");
+        tok2 = new Token("a", "ID");
     }
 
     @Test
@@ -77,6 +79,14 @@ public class ScopeTest {
         Scope sc = new Scope();
         sc.addToken(tok1);
         sc.createScope();
+        assertTrue(sc.tokenInScope(tok1));
+    }
+
+    @Test
+    public void tokeninScopeFindsTokenInTopScopeWhenMultipleTokensPresent() {
+        Scope sc = new Scope();
+        System.out.println(tok1.toString() + " " + tok2.toString());
+        sc.addToken(tok1).addToken(tok2);
         assertTrue(sc.tokenInScope(tok1));
     }
 }

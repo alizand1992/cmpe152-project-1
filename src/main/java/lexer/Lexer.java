@@ -41,17 +41,19 @@ public class Lexer {
      * @return single token at the next index
      */
     public Token getNextToken() {
-        Token tok = peek();
-        index++;
-
-        return tok;
+        if (tokens.isEmpty()) {
+            return TokenType.getTokenFromPattern("\26");
+        } else {
+            return tokens.pop();
+        }
     };
 
     public Token peek() {
-        if (index < tokens.size()) {
-            return tokens.get(index);
+        if (tokens.isEmpty()) {
+            return TokenType.getTokenFromPattern("\26");
+        } else {
+            return tokens.peek();
         }
-        return TokenType.getTokenFromPattern("\26");
     }
 
     /**
