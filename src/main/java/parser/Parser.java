@@ -2,6 +2,7 @@ package parser;
 
 import lexer.Lexer;
 import lexer.Token;
+import lexer.TokenType;
 import parser.intermediate.*;
 
 import java.util.ArrayList;
@@ -35,10 +36,10 @@ public class Parser {
         scope.createScope();
 
         // Decls
-
+        decls();
 
         // Stmts
-        Stmt s = new Stmt();
+        Stmt s = stmts();
 
         //  match close bracket
         match("}");
@@ -61,14 +62,24 @@ public class Parser {
     }
 
     // decls -> E | decls decl
+    public void decls() throws Exception {
 
+    }
     // type -> int | float | bool
+    String type() throws Exception {
+        Token currentToken = lex.getNextToken();
 
-    // stmts -> E | stmts stmt
+        if (!currentToken.getName().equals("BASE_TYPE")) {
+            throw new Exception("Token is not a type.");
+        }
+
+        return currentToken.getPattern();
+    }
 
     /**
      * Calls statement for the first token and itself for the remaining this way it recursively goes throw each token.
      * This allows the all statements to be processed until the end of the block.
+     * stmts -> E | stmts stmt
      *
      * @return
      * @throws Exception Syntax error
@@ -176,14 +187,33 @@ public class Parser {
     }
 
     // andexpr -> andexpr && equal | equal
+    public Expression andexpr() throws Exception {
 
+        return null;
+    }
     // equal -> equal == rel | equal != rel | rel
+    public Expression equal() throws Exception {
+        return null;
+    }
 
     // rel -> expr < expr |  expr <= expr | expr > expr | expr >= expr | expr
+    public Expression rel() throws Exception {
+
+        return null;
+    }
 
     // expr -> expr + term | expr - term | term
+    Expression expr() throws Exception {
+
+        return null;
+    }
+
 
     // term -> term * factor | term / factor | factor
+    public Expression term() throws Exception {
+
+        return null;
+    }
 
     // incdecexpr -> id++ | id--
     public Stmt incdecexpr() throws Exception {
@@ -202,7 +232,11 @@ public class Parser {
             case "TRUE":
             case "FALSE":
                 return new Stmt(tok.getName());
-
+            case "ID":
+                break;
+            case "NUM":
+            case "REAL":
+                break;
         }
 
         return null;
@@ -211,7 +245,5 @@ public class Parser {
     private void idInScope(Token id) throws Exception {
         if (!scope.tokenInScope(id))
             throw new Exception("Id not found");
-
     }
-
 }
