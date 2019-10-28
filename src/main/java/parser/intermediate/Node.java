@@ -32,4 +32,8 @@ public class Node {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    public ArrayList<Node> getChildren() {
+        return this.children;
+    }
 }

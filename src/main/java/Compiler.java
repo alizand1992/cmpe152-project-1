@@ -1,6 +1,7 @@
 import lexer.Lexer;
 import lexer.Token;
 import parser.Parser;
+import parser.intermediate.Node;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,7 +16,7 @@ public class Compiler {
 
         System.out.println("Please enter a file to compile: ");
         System.out.println("Working Directory: " + System.getProperty("user.dir"));
-        path = in.nextLine();
+        path = "sample_code"; // in.nextLine();
 
         ArrayList<String> lines = new ArrayList<>();
 
@@ -35,6 +36,21 @@ public class Compiler {
 
         Parser parser = new Parser(lex);
 
-//        parser.parse();
+        try {
+            Node root = parser.parse();
+
+            printNode(root, "----");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void printNode(Node node, String prefix) {
+        System.out.println(prefix + " " + node.getLabel());
+
+        for (Node nd : node.getChildren()) {
+            printNode(nd, prefix + "----");
+        }
     }
 }
+

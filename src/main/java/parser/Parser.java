@@ -6,6 +6,7 @@ import lexer.TokenType;
 import parser.intermediate.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
 public class Parser {
@@ -21,9 +22,11 @@ public class Parser {
         scope = new Scope();
     }
 
-    public void parse() throws Exception {
-        if (lex == null) return;
-        program();
+    public Node parse() throws Exception {
+        if (lex == null) {
+            throw new Exception("Lexer is empty.");
+        };
+        return program();
     }
 
     public Program program() throws Exception { // Program -> block
@@ -52,7 +55,13 @@ public class Parser {
 
     private boolean match(String name, boolean discard) throws Exception {
         if (!lex.peek().getName().equals(name)) {
-            throw new Exception("Syntax Error!");
+            LinkedList<Token> tokens = lex.getTokens();
+
+            for (Token tok : tokens) {
+                System.err.println(tok.toString());
+            }
+
+            throw new Exception("Syntax Error!\n  Expected: " + name + "\n  Got: " + lex.peek().getName());
         }
         if (discard) {
             lex.getNextToken();
@@ -63,8 +72,12 @@ public class Parser {
 
     // decls -> E | decls decl
     public void decls() throws Exception {
-
+        String type = type();
+        match("ID", false);
+        scope.addToken(lex.getNextToken());
+        match(";");
     }
+
     // type -> int | float | bool
     String type() throws Exception {
         Token currentToken = lex.getNextToken();
@@ -85,7 +98,7 @@ public class Parser {
      * @throws Exception Syntax error
      */
     public Stmt stmts() throws Exception {
-        if (match("}", false)) {
+        if (lex.peek().getName().equals("}")) {
             return null;
         }
 
@@ -101,7 +114,10 @@ public class Parser {
      * @throws Exception
      */
     public Stmt stmt() throws Exception {
-        Token tok = lex.getNextToken();
+        Token tok = lex.peek();
+        if (!tok.getName().equals("{")) {
+            tok = lex.getNextToken();
+        }
         Expression expr;
         ArrayList<Stmt> stmts = new ArrayList<>();
 
