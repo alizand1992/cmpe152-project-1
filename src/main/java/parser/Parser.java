@@ -235,8 +235,15 @@ public class Parser {
 
     // expr -> expr + term | expr - term | term
     Expression expr() throws Exception {
+        Expression expr = term();
+        Token currentToken = lex.peek();
 
-        return null;
+        while (currentToken.getName().equals("+") || currentToken.getName().equals("-")) {
+            currentToken = lex.getNextToken();
+            expr = new Arith(currentToken, expr, term());
+        }
+
+        return expr;
     }
 
 
@@ -246,10 +253,11 @@ public class Parser {
         Token currentToken = lex.peek();
 
         while (currentToken.getName().equals("*") || currentToken.getName().equals("/")) {
-            expr = new Arit
+            currentToken = lex.getNextToken();
+            expr = new Arith(currentToken, expr, factor());
         }
 
-        return null;
+        return expr;
     }
 
     // incdecexpr -> id++ | id--

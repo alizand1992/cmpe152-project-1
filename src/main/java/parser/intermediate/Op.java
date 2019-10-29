@@ -5,7 +5,7 @@ import lexer.Token;
 public class Op extends Expression {
     private String type;
 
-    public Op(Token tok, String type) {
+    public Op(Token tok) {
         super(tok);
     }
 }
