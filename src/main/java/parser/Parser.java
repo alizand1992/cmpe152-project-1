@@ -229,6 +229,18 @@ public class Parser {
 
     // rel -> expr < expr |  expr <= expr | expr > expr | expr >= expr | expr
     public Expression rel() throws Exception {
+        Expression expr = expr();
+        Token currentToken = lex.peek();
+
+        switch (currentToken.getName()) {
+            case "LE":
+            case "<":
+            case ">":
+            case "GE":
+                currentToken = lex.getNextToken();
+                return new Rel
+
+        }
 
         return null;
     }
