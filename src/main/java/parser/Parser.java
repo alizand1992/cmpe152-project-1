@@ -210,7 +210,7 @@ public class Parser {
         return null;
     }
 
-    // allexpr -> allexpr || andexpr | andexpr
+    // allexpr -> allexpr | andexpr | andexpr
     public Expression allexpr() throws Exception {
 
         return null;
@@ -223,6 +223,7 @@ public class Parser {
     }
     // equal -> equal == rel | equal != rel | rel
     public Expression equal() throws Exception {
+
         return null;
     }
 
@@ -241,6 +242,12 @@ public class Parser {
 
     // term -> term * factor | term / factor | factor
     public Expression term() throws Exception {
+        Expression expr = factor();
+        Token currentToken = lex.peek();
+
+        while (currentToken.getName().equals("*") || currentToken.getName().equals("/")) {
+            expr = new Arit
+        }
 
         return null;
     }
@@ -265,7 +272,7 @@ public class Parser {
 
     // STILL NEEDS WORK
     // factor -> (allexpr) | incdecexpr | id | num | real | true | false
-    public Stmt factor() throws Exception {
+    public Expression factor() throws Exception {
         Token tok = lex.getNextToken();
         switch (tok.getName()) {
             case "(":
@@ -273,7 +280,7 @@ public class Parser {
                 match(")");
             case "TRUE":
             case "FALSE":
-                return new Stmt(tok.getName());
+                return new Expression(tok);
             case "ID":
                 idInScope(tok);
                 break;

@@ -66,4 +66,20 @@ public class Token {
             return getName() + "\t\t" + getPattern();
         }
     }
+
+    public boolean isNumeric() {
+        return getName().equals("BASE_TYPE");
+    }
+
+    public boolean isFloat() {
+        return isNumeric() && getPattern().equals("float");
+    }
+
+    public boolean isInt() {
+        return isNumeric() && getPattern().equals("int");
+    }
+
+    public boolean isBool() {
+        return isNumeric() && getPattern().equals("bool");
+    }
 }
