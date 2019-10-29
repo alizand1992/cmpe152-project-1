@@ -31,6 +31,8 @@ public class TokenType {
         types.put("||", new Token("||", "OR"));
         types.put("true", new Token("true", "TRUE"));
         types.put("while", new Token("while", "WHILE"));
+        types.put("++", new Token("++", "INC"));
+        types.put("--", new Token("--", "DEC"));
         types.put(";", new Token(";"));
         types.put("=", new Token("="));
         types.put("<", new Token("<"));

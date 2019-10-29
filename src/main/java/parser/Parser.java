@@ -201,30 +201,44 @@ public class Parser {
         // Set object in example is a good guide.
         Expression expr = allexpr();
 
-        // For only when to ids get set to eachother
-        // THIS NEEDS TO CHANGE
-        match("ID", false);
-        idInScope(lex.getNextToken());
-
         match(";");
-        return null;
+        return expr;
     }
 
-    // allexpr -> allexpr | andexpr | andexpr
+    // allexpr -> allexpr || andexpr | andexpr
     public Expression allexpr() throws Exception {
+        Expression expr = andexpr();
+        Token currentToken = lex.peek();
 
-        return null;
+        while (currentToken.getName().equals("OR")) {
+            currentToken = lex.getNextToken();
+            expr = new Or(currentToken, expr, andexpr());
+        }
+
+        return expr;
     }
 
     // andexpr -> andexpr && equal | equal
     public Expression andexpr() throws Exception {
+        Expression expr = equal();
+        Token currentToken = lex.peek();
 
-        return null;
+        while (currentToken.getName().equals("AND")) {
+            currentToken = lex.getNextToken();
+            expr = new And(currentToken, expr, equal());
+        }
+
+        return expr;
     }
     // equal -> equal == rel | equal != rel | rel
     public Expression equal() throws Exception {
-
-        return null;
+        Expression expr = rel();
+        Token currentToken = lex.peek();
+        while (currentToken.getName().equals("EQ") || currentToken.getName().equals("NE")) {
+            currentToken = lex.getNextToken();
+            expr = new Rel(currentToken, expr, rel());
+        }
+        return expr;
     }
 
     // rel -> expr < expr |  expr <= expr | expr > expr | expr >= expr | expr
@@ -238,11 +252,10 @@ public class Parser {
             case ">":
             case "GE":
                 currentToken = lex.getNextToken();
-                return new Rel
-
+                return new Rel(currentToken, expr, expr());
+            default:
+                return expr;
         }
-
-        return null;
     }
 
     // expr -> expr + term | expr - term | term
@@ -278,13 +291,10 @@ public class Parser {
             idInScope(lex.getNextToken());
         }
 
-        Token tok = lex.peek();
-        if (tok.getName().equals("+")) {
-            match("+");
-            match("+");
-        } else if (tok.getName().equals("-")) {
-            match("-");
-            match("-");
+        Token currentToken = lex.peek();
+        if (currentToken.getName().equals("INC") || currentToken.getName().equals("DEC")) {
+            currentToken = lex.getNextToken();
+            return new Stmt(currentToken.getName());
         }
 
         return null;
@@ -308,7 +318,9 @@ public class Parser {
             case "REAL":
                 // TYPE CHECK
                 break;
-            default: // Increment Decrement
+            case "INC":
+            case "DEC":
+                // Increment Decrement
                 incdecexpr();
         }
 

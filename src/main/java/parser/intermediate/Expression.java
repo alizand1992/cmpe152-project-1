@@ -2,7 +2,7 @@ package parser.intermediate;
 
 import lexer.Token;
 
-public class Expression extends Node {
+public class Expression extends Stmt {
     private Token tok;
 
     public Expression(Token tok) {
