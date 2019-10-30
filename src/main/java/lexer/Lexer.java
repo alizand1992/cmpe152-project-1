@@ -87,8 +87,8 @@ public class Lexer {
                 if (temp.length() != 1) {
                     temp = removeLastChar(temp);
                     boolean flag = false;
-
                     boolean currentCharDoesNotNeedSpaces = false;
+
                     if (temp.length() - 1 >= 0) {
                         for (int j = 0; j < noSpaceNeeded.length; j++) {
                             if (temp.charAt(temp.length() - 1) == noSpaceNeeded[j]) {
@@ -108,6 +108,20 @@ public class Lexer {
                                 i = -1;
                                 break;
                             }
+                        }
+
+                        if (flag == false && getToken(temp).getName().equals("NUM") && lastChar == '.') {
+                            String decPart = line.substring(temp.length() + 1);
+
+                            while (getToken(decPart) == null || !getToken(decPart).getName().equals("NUM")) {
+                                decPart = removeLastChar(decPart);
+                            }
+                            temp = temp + "." + decPart;
+                            tokens.add(getToken(temp));
+                            line = discardFoundTokenAndSpace(temp, line);
+                            i = -1;
+                            temp = "";
+                            flag = true;
                         }
                     } else {
                         tokens.add(getToken(temp));

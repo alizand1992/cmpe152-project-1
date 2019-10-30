@@ -1,8 +1,4 @@
 {
-    int i; int dd;
-
-    for (i = 0; i < 5; i++)
-    {
-        dd = i + dd;
-    }
+    int i;
+    i = 15.2;
 }
