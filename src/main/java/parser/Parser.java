@@ -73,11 +73,11 @@ public class Parser {
         if (!lex.peek().getName().equals("BASE_TYPE"))
             return;
 
-        String type = type();
+        Token type = type();
         match("ID", false);
         Token currentToken = lex.getNextToken();
         Id id = new Id("", currentToken);
-        scope.addToken(currentToken);
+        scope.addToken(currentToken, type);
         match(";");
 
         if (lex.peek().getName().equals("BASE_TYPE")) {
@@ -86,14 +86,14 @@ public class Parser {
     }
 
     // type -> int | float | bool
-    String type() throws Exception {
+    Token type() throws Exception {
         Token currentToken = lex.getNextToken();
 
         if (!currentToken.getName().equals("BASE_TYPE")) {
             throw new Exception("Token is not a type.");
         }
 
-        return currentToken.getPattern();
+        return currentToken;
     }
 
     /**
@@ -205,7 +205,7 @@ public class Parser {
 
         // GOTTA FIGURE OUT WHAT TO DO WITH EXPR
         // Set object in example is a good guide.
-        Assign assign = new Assign(id, allexpr());
+        Assign assign = new Assign(id, allexpr(), scope);
 
         match(";");
         return assign;

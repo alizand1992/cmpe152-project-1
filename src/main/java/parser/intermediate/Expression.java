@@ -9,4 +9,8 @@ public class Expression extends Stmt {
         super("Token " + tok.getName() + "    " + tok.getPattern());
         this.tok = tok;
     }
+
+    public Token getToken() {
+        return this.tok;
+    }
 }

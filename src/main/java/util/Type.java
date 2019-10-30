@@ -11,15 +11,15 @@ public class Type {
 
         // cast int to float
         if (lhs.isFloat() || rhs.isFloat()) {
-            return new Token("float");
+            return new Token("float", "BASE_TYPE");
         }
 
         // cast to int
         if (lhs.isInt() || rhs.isInt()) {
-            return new Token("int");
+            return new Token("int", "BASE_TYPE");
         }
 
         // is bool
-        return new Token("bool");
+        return new Token("bool", "BASE_TYPE");
     }
 }

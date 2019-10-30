@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Scope {
-    private LinkedList<HashSet<Token>> scopes;
+    private LinkedList<HashSet<ScopeElement>> scopes;
 
     /**
      * Default constructor
@@ -21,7 +21,7 @@ public class Scope {
      *
      * @param scope scope to be added.
      */
-    public Scope(HashSet<Token> scope) {
+    public Scope(HashSet<ScopeElement> scope) {
         this();
         scopes.push(scope);
     }
@@ -32,7 +32,7 @@ public class Scope {
      * @param scope copy scope object
      */
     public Scope(Scope scope) {
-        scopes = (LinkedList<HashSet<Token>>)scope.getAllScopes().clone();
+        scopes = (LinkedList<HashSet<ScopeElement>>)scope.getAllScopes().clone();
     }
 
     /**
@@ -42,9 +42,9 @@ public class Scope {
      * @return false or true result of the search
      */
     public boolean tokenInScope(Token tok) {
-        for (HashSet<Token> sc : getAllScopes()) {
-            for (Token rhs : sc) {
-                if (rhs.equals(tok)) {
+        for (HashSet<ScopeElement> sc : getAllScopes()) {
+            for (ScopeElement rhs : sc) {
+                if (rhs.getId().equals(tok)) {
                     return true;
                 }
             }
@@ -52,10 +52,21 @@ public class Scope {
         return false;
     }
 
+    public ScopeElement getToken(Token tok) {
+        for (HashSet<ScopeElement> sc : getAllScopes()) {
+            for (ScopeElement rhs : sc) {
+                if (rhs.getId().equals(tok)) {
+                    return rhs;
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Pops the latest scope when exiting outside of the scope
      */
-    public HashSet<Token> exitScope() {
+    public HashSet<ScopeElement> exitScope() {
         return scopes.removeLast();
     }
 
@@ -66,7 +77,7 @@ public class Scope {
      * @return returns itself so that it is chainable
      * @throws IllegalArgumentException Error in case of duplicate token
      */
-    public Scope addToken(Token tok) throws IllegalArgumentException {
+    public Scope addToken(Token tok, Token type) throws IllegalArgumentException {
         if (scopes.isEmpty()) {
             createScope();
         }
@@ -75,8 +86,8 @@ public class Scope {
             throw new IllegalArgumentException("Cannot Insert a Token Twice");
         }
 
-        HashSet<Token> hs = scopes.removeLast();
-        hs.add(tok);
+        HashSet<ScopeElement> hs = scopes.removeLast();
+        hs.add(new ScopeElement(tok, type));
         scopes.add(hs);
 
         return this;
@@ -86,7 +97,7 @@ public class Scope {
      *
      * @return top hashset in stack
      */
-    public HashSet<Token> getScope() {
+    public HashSet<ScopeElement> getScope() {
         if (scopes.isEmpty()) {
             return null;
         }
@@ -94,7 +105,7 @@ public class Scope {
         return scopes.peek();
     }
 
-    public LinkedList<HashSet<Token>> getAllScopes() {
+    public LinkedList<HashSet<ScopeElement>> getAllScopes() {
         return scopes;
     }
 
@@ -104,7 +115,7 @@ public class Scope {
      * @return itself so it is chainable
      */
     public Scope createScope() {
-        scopes.push(new HashSet<Token>());
+        scopes.push(new HashSet<ScopeElement>());
         return this;
     }
 
@@ -114,7 +125,7 @@ public class Scope {
      * @param scope hashset to be pushed to the top of the stack
      * @return itself so it is chainable
      */
-    public Scope createScope(HashSet<Token> scope) {
+    public Scope createScope(HashSet<ScopeElement> scope) {
         this.scopes.push(scope);
         return this;
     }

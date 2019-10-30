@@ -68,7 +68,9 @@ public class Token {
     }
 
     public boolean isNumeric() {
-        return getName().equals("BASE_TYPE");
+        return getName().equals("BASE_TYPE") || getName().equals("REAL") ||
+                getName().equals("NUM") || getName().equals("TRUE") ||
+                getName().equals("FALSE");
     }
 
     public boolean isFloat() {
