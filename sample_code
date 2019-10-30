@@ -1,5 +1,8 @@
 {
-    int r; int dd; int a; int d;
-    r = a; dd = d;
-    while( dd <= r ) dd = 2*dd;
+    int i; int dd;
+
+    for (i = 0; i < 5; i++)
+    {
+        dd = i + dd;
+    }
 }

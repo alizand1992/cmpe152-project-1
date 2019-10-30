@@ -15,6 +15,13 @@ public class Stmt extends Node {
         super(label, s);
     }
 
+    public Stmt(String label, ArrayList<Stmt> stmts) {
+        super(label);
+        for(Stmt stmt : stmts) {
+            addChild(stmt);
+        }
+    }
+
     public Stmt(String label, Expression expr, ArrayList<Stmt> stmts) {
         super(label);
 

@@ -70,6 +70,9 @@ public class Parser {
 
     // decls -> E | decls decl
     public void decls() throws Exception {
+        if (!lex.peek().getName().equals("BASE_TYPE"))
+            return;
+
         String type = type();
         match("ID", false);
         Token currentToken = lex.getNextToken();
@@ -151,7 +154,6 @@ public class Parser {
                 return new While(expr, stmts);
             case "DO":
                 lex.getNextToken();
-                System.out.println("157 " + lex.getTokens());
                 // Get the statements inside the do
                 stmts.add(stmt());
                 // verify after the do statement there is a while
@@ -169,12 +171,13 @@ public class Parser {
                 //   eg.  (int i = 0; i < 123; i++)
                 match("(");
                 stmts.add(assign());
-                expr = (allexpr());
+                stmts.add(allexpr());
                 match(";");
                 stmts.add(incdecexpr());
                 match(")");
                 // Capture statements inside the for loop
                 stmts.add(stmt());
+                return new For(stmts);
             case "BREAK":
                 lex.getNextToken();
                 match(";");
@@ -271,6 +274,7 @@ public class Parser {
         while (currentToken.getName().equals("+") || currentToken.getName().equals("-")) {
             currentToken = lex.getNextToken();
             expr = new Arith(currentToken, expr, term());
+            currentToken = lex.peek();
         }
 
         return expr;
