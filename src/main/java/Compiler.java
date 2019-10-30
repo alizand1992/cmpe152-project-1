@@ -47,6 +47,8 @@ public class Compiler {
     }
 
     public static void printNode(Node node, String prefix) {
+        if (node == null)
+            return;
         System.out.println(prefix + " " + node.getLabel());
 
         for (Node nd : node.getChildren()) {
