@@ -2,12 +2,10 @@ package parser;
 
 import lexer.Lexer;
 import lexer.Token;
-import lexer.TokenType;
 import parser.intermediate.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.concurrent.ExecutionException;
 
 public class Parser {
     private Lexer lex;
@@ -65,6 +63,7 @@ public class Parser {
         }
         if (discard) {
             lex.getNextToken();
+            System.out.println("66 " + lex.getTokens());
         }
 
         return true;
@@ -75,6 +74,7 @@ public class Parser {
         String type = type();
         match("ID", false);
         scope.addToken(lex.getNextToken());
+        System.out.println("77 " + lex.getTokens());
         match(";");
 
         if (lex.peek().getName().equals("BASE_TYPE")) {
@@ -85,7 +85,7 @@ public class Parser {
     // type -> int | float | bool
     String type() throws Exception {
         Token currentToken = lex.getNextToken();
-
+        System.out.println("88 " + lex.getTokens());
         if (!currentToken.getName().equals("BASE_TYPE")) {
             throw new Exception("Token is not a type.");
         }
@@ -126,6 +126,7 @@ public class Parser {
         switch (tok.getName()) {
             case ";":
                 lex.getNextToken();
+                System.out.println("129 " + lex.getTokens());
                 return null;
             case "IF":
                 lex.getNextToken();
@@ -138,12 +139,14 @@ public class Parser {
                 // Does it have an else
                 if (match("ELSE", false)) {
                     lex.getNextToken();
+                    System.out.println("142 " + lex.getTokens());
                     stmts.add(stmt());
                 }
 
                 return new IfElse(expr, stmts);
             case "WHILE":
                 lex.getNextToken();
+                System.out.println("149 " + lex.getTokens());
                 match("(");
                 expr = allexpr();
                 match(")");
@@ -151,6 +154,7 @@ public class Parser {
                 return new While(expr, stmts);
             case "DO":
                 lex.getNextToken();
+                System.out.println("157 " + lex.getTokens());
                 // Get the statements inside the do
                 stmts.add(stmt());
                 // verify after the do statement there is a while
@@ -164,6 +168,7 @@ public class Parser {
                 return new Do(expr, stmts);
             case "FOR":
                 lex.getNextToken();
+                System.out.println("171 " + lex.getTokens());
                 // Match the paranthesis and the expression/statement inside of it
                 //   eg.  (int i = 0; i < 123; i++)
                 match("(");
@@ -176,10 +181,13 @@ public class Parser {
                 stmts.add(stmt());
             case "BREAK":
                 lex.getNextToken();
+                System.out.println("184 " + lex.getTokens());
                 match(";");
                 return new Break();
             case "BASE_TYPE":
                 decls();
+            case "}":
+                return null;
             case "{":
                 return block();
             default:
@@ -194,13 +202,12 @@ public class Parser {
 
         // Throw an error if the id is not already decleared.
         idInScope(lex.getNextToken());
-
+        System.out.println("205 " + lex.getTokens().toString());
         match("=");
 
         // GOTTA FIGURE OUT WHAT TO DO WITH EXPR
         // Set object in example is a good guide.
         Expression expr = allexpr();
-
         match(";");
         return expr;
     }
@@ -212,6 +219,7 @@ public class Parser {
 
         while (currentToken.getName().equals("OR")) {
             currentToken = lex.getNextToken();
+            System.out.println("222 " + lex.getTokens().toString());
             expr = new Or(currentToken, expr, andexpr());
         }
 
@@ -225,6 +233,7 @@ public class Parser {
 
         while (currentToken.getName().equals("AND")) {
             currentToken = lex.getNextToken();
+            System.out.println("236 " + lex.getTokens().toString());
             expr = new And(currentToken, expr, equal());
         }
 
@@ -234,10 +243,13 @@ public class Parser {
     public Expression equal() throws Exception {
         Expression expr = rel();
         Token currentToken = lex.peek();
+
         while (currentToken.getName().equals("EQ") || currentToken.getName().equals("NE")) {
             currentToken = lex.getNextToken();
+            System.out.println("249 " + lex.getTokens().toString());
             expr = new Rel(currentToken, expr, rel());
         }
+
         return expr;
     }
 
@@ -252,6 +264,7 @@ public class Parser {
             case ">":
             case "GE":
                 currentToken = lex.getNextToken();
+                System.out.println("267 " + lex.getTokens().toString());
                 return new Rel(currentToken, expr, expr());
             default:
                 return expr;
@@ -265,6 +278,7 @@ public class Parser {
 
         while (currentToken.getName().equals("+") || currentToken.getName().equals("-")) {
             currentToken = lex.getNextToken();
+            System.out.println("281 " + lex.getTokens().toString());
             expr = new Arith(currentToken, expr, term());
         }
 
@@ -278,8 +292,13 @@ public class Parser {
         Token currentToken = lex.peek();
 
         while (currentToken.getName().equals("*") || currentToken.getName().equals("/")) {
+            System.out.println("295 " + lex.getTokens());
+            if (lex.peek().getName().equals(";"))
+                break;
             currentToken = lex.getNextToken();
+            System.out.println("297 " + lex.getTokens());
             expr = new Arith(currentToken, expr, factor());
+            System.out.println("299 " + lex.getTokens());
         }
 
         return expr;
@@ -294,6 +313,7 @@ public class Parser {
         Token currentToken = lex.peek();
         if (currentToken.getName().equals("INC") || currentToken.getName().equals("DEC")) {
             currentToken = lex.getNextToken();
+            System.out.println("312 " + lex.getTokens());
             return new Stmt(currentToken.getName());
         }
 
@@ -303,21 +323,23 @@ public class Parser {
     // STILL NEEDS WORK
     // factor -> (allexpr) | incdecexpr | id | num | real | true | false
     public Expression factor() throws Exception {
-        Token tok = lex.getNextToken();
+        Token tok = lex.peek();
+        System.out.println("323 " + lex.getTokens());
         switch (tok.getName()) {
             case "(":
-                allexpr();
+                Expression expr = allexpr();
                 match(")");
+                return expr;
             case "TRUE":
             case "FALSE":
-                return new Expression(tok);
-            case "ID":
-                idInScope(tok);
-                break;
             case "NUM":
             case "REAL":
-                // TYPE CHECK
-                break;
+                tok = lex.getNextToken();
+                return new Expression(tok);
+            case "ID":
+                tok = lex.getNextToken();
+                idInScope(tok);
+                return new Expression(tok);
             case "INC":
             case "DEC":
                 // Increment Decrement
