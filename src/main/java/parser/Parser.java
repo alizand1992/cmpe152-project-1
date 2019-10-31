@@ -287,10 +287,9 @@ public class Parser {
         Token currentToken = lex.peek();
 
         while (currentToken.getName().equals("*") || currentToken.getName().equals("/")) {
-            if (lex.peek().getName().equals(";"))
-                break;
             currentToken = lex.getNextToken();
             expr = new Arith(currentToken, expr, factor());
+            currentToken = lex.peek();
         }
 
         return expr;

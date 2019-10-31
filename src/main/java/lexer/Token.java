@@ -55,7 +55,11 @@ public class Token {
 
         Token rhs = (Token)obj;
 
-        return this.name.equals(rhs.getName()) && this.pattern.equals(rhs.getPattern());
+        boolean nm = this.name.equals(rhs.getName());
+        boolean pat = this.pattern.equals(rhs.getPattern());
+        boolean eq = nm && pat;
+
+        return eq;
     }
 
     @Override

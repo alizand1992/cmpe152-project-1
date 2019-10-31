@@ -1,4 +1,6 @@
 {
-    float i;
-    i = 15;
+    int r; int dd; int a; int d;
+    r = a; dd = d;
+    while( dd <= r ) dd = 2 * dd ;
 }
+
