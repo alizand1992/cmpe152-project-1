@@ -16,7 +16,7 @@ public class Compiler {
 
         System.out.println("Please enter a file to compile: ");
         System.out.println("Working Directory: " + System.getProperty("user.dir"));
-        path = "sample_code"; // in.nextLine();
+        path = in.nextLine();
 
         ArrayList<String> lines = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class Compiler {
         try {
             Node root = parser.parse();
 
-            printNode(root, "----");
+            printNode(root, "--");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class Compiler {
         System.out.println(prefix + " " + node.getLabel());
 
         for (Node nd : node.getChildren()) {
-            printNode(nd, prefix + "----");
+            printNode(nd, prefix + "--");
         }
     }
 }
